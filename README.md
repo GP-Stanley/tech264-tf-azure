@@ -1,5 +1,6 @@
 Table of Contents
 
+- [Azure Documentation](#azure-documentation)
 - [Task: Setup your repo to use Azure blob storage for state file management](#task-setup-your-repo-to-use-azure-blob-storage-for-state-file-management)
   - [Create new repo 'tech264-tf-azure'](#create-new-repo-tech264-tf-azure)
   - [Step 1: Create a Storage Account and Container in Azure](#step-1-create-a-storage-account-and-container-in-azure)
@@ -7,6 +8,11 @@ Table of Contents
   - [Step 3: Setup Main Architecture](#step-3-setup-main-architecture)
   - [Step 4: Verify and Share Links](#step-4-verify-and-share-links)
   - [Step 5: Documentation](#step-5-documentation)
+
+<br>
+
+# Azure Documentation
+Source: https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az_group_create
 
 <br>
 
@@ -27,16 +33,50 @@ Deliverables:
 * Go to GitHub Repo > `mkdir tech264-tf-azure`
 * cd into new repo.
 * `git init`
-* 
-
+* `git add .`
+* `git commit -m "xxxx"`
+* `git branch -M main`
+* `git remote add origin` https://github.com/GP-Stanley/tech264-tf-azure.git
+* `git push -u origin main`
 
 <br>
 
 ## Step 1: Create a Storage Account and Container in Azure
 1. Login to Azure.
-2. Create a Resource Group.
-3. Create a Storage Account.
-4. Create a Blob Container.
+   * I'm using the Windows Powershell terminal. 
+   * If you don’t have the Azure CLI, install it and login by running: `az login`. 
+
+![alt text](image.png)
+
+* Even though "Something went wrong", click "Done"
+
+![alt text](image-1.png)
+
+* Select your subscription with "1"
+
+![alt text](image-2.png)
+
+<br>
+
+1. Create a Resource Group:  
+   * This is like a folder that holds all the Azure resources you’ll create.
+   * I'm still using the Windows Powershell terminal.
+   * Code example: `az group create -l westus -n MyResourceGroup`
+
+```bash
+az group create -l uksouth -n tech264
+```
+
+
+<br>
+
+1. Create a Storage Account.
+
+
+
+<br>
+
+3. Create a Blob Container.
 
 ## Step 2: Configure Terraform Backend
 1. Create a backend.tf file in a separate folder (e.g., terraform-backend).
