@@ -1,9 +1,24 @@
+# Use Azure blob storage as backend for terraform state files. 
+terraform {
+  backend "azurerm" {
+    resource_group_name = "tech264"
+    storage_account_name = "tfgeorgiastorageaccount"
+    container_name = "tfstate"
+    key = "terraform.tfstate" # You can organise state files by folder
+  }
+}
+
 # Create the VNet with Two Subnets
 provider "azurerm" {
   features {}
   use_cli                         = true
   subscription_id                 = var.subscription_id
   resource_provider_registrations = "none"
+}
+
+# Reference an existing resource group
+data "azurerm_resource_group" "main" {
+  name = "tech264" # Replace with the actual name of your resource group
 }
 
 # Create a VNet
@@ -162,7 +177,21 @@ resource "azurerm_linux_virtual_machine" "app_vm" {
   }
 
   # Add User Data
-  user_data = filebase64(var.user_data_script_path) # Path to your script
+  # user_data = filebase64(var.user_data_script_path) # Path to your script
+
+  user_data = base64encode(<<-EOF
+  #!/bin/bash
+  export DB_HOST="mongodb://10.0.3.4:27017/posts"
+
+  echo "Change directory to app"
+  cd repo/app
+
+  pm2 stop all
+  echo "start"
+  pm2 start app.js
+  echo "App started with pm2"
+  EOF
+  )
 
   os_disk {
     caching              = "ReadWrite"
@@ -209,7 +238,7 @@ resource "azurerm_linux_virtual_machine" "db_vm" {
   }
 
   # Add User Data
-  user_data = filebase64(var.database_user_data_script_path) # Path to your script
+  #user_data = filebase64(var.database_user_data_script_path) # Path to your script
 
 
   os_disk {
